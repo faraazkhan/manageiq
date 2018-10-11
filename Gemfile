@@ -280,6 +280,7 @@ end
 #HACKS UNTIL OTHER REPOS ARE UPDATED
 override_gem "activerecord-id_regions", :git => "https://github.com/jrafanie/activerecord-id_regions.git", :branch => "rails-5-1"
 override_gem "manageiq-schema",         :git => "https://github.com/jrafanie/manageiq-schema.git",         :branch => "rails-5-1"
+override_gem "inventory_refresh",       :git => "https://github.com/ManageIQ/inventory_refresh.git",       :branch => "master"
 
 # Load other additional Gemfiles
 #   Developers can create a file ending in .rb under bundler.d/ to specify additional development dependencies
