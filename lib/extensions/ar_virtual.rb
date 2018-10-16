@@ -401,7 +401,7 @@ module VirtualAttributes
         # change necessary for rails 5.0 and 5.1 - (changed/introduced in https://github.com/rails/rails/pull/31894)
         defaults = defaults.except(*virtual_attribute_names)
         # end change
-        @attributes_builder = ActiveRecord::AttributeSet::Builder.new(attribute_types, defaults)
+        @attributes_builder = ActiveModel::AttributeSet::Builder.new(attribute_types, defaults)
       end
       @attributes_builder
     end
@@ -595,8 +595,6 @@ end
 # Class extensions
 #
 
-# this patch is no longer necessary for 5.2
-require "active_record/attribute"
 module ActiveRecord
   # This is a bug in rails 5.0 and 5.1, but it is made much worse by virtual attributes
   class Attribute

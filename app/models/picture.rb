@@ -41,7 +41,7 @@ class Picture < ApplicationRecord
 
   def content=(value)
     value.force_encoding('ASCII-8BIT')
-    super(value).tap { self.md5 = Digest::MD5.hexdigest(value) }
+    super(value).tap { self.md5 = Digest::SHA256.hexdigest(value) }
   end
 
   def size

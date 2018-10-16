@@ -34,13 +34,14 @@ gem "byebug",                                          :require => false
 gem "color",                          "~>1.8"
 gem "config",                         "~>1.6.0",       :require => false
 gem "dalli",                          "=2.7.6",        :require => false
-gem "default_value_for",              "~>3.0.3"
+gem "default_value_for",              "~>3.1.0"
 gem "docker-api",                     "~>1.33.6",      :require => false
 gem "elif",                           "=0.1.0",        :require => false
 gem "fast_gettext",                   "~>1.2.0"
 gem "gettext_i18n_rails",             "~>1.7.2"
 gem "gettext_i18n_rails_js",          "~>1.3.0"
-gem "hamlit",                         "~>2.8.5"
+gem "hamlit",                         "~>2.9.2"
+gem 'haml', '5.0.0.beta.2'
 gem "highline",                       "~>1.6.21",      :require => false
 gem "inifile",                        "~>3.0",         :require => false
 gem "inventory_refresh",              "~>0.1.2",       :require => false
@@ -63,9 +64,6 @@ gem "pg",                                              :require => false
 gem "pg-dsn_parser",                  "~>0.1.0",       :require => false
 gem "query_relation",                 "~>0.1.0",       :require => false
 gem "rails",                          "~>5.2.2.1"
-
-# TODO: https://github.com/rails/rails/commit/6ef736625eddf6700f2e67f7849c79c92381abee is on 5-1-stable but not released as of 5.1.6
-# See also: https://github.com/rails/rails/issues/29013
 gem "rails-i18n",                     "~>5.x"
 gem "rake",                           ">=11.0",        :require => false
 gem "rest-client",                    "~>2.0.0",       :require => false
@@ -224,7 +222,7 @@ end
 unless ENV["APPLIANCE"]
   group :development do
     gem "foreman"
-    gem "haml_lint",        "~>0.20.0", :require => false
+    # gem "haml_lint",        "~>0.20.0", :require => false
     gem "rubocop",          "~>0.52.1", :require => false
     # ruby_parser is required for i18n string extraction
     gem "ruby_parser",                  :require => false
@@ -247,41 +245,3 @@ unless ENV["APPLIANCE"]
     gem "rspec-rails",      "~>3.6.0"
   end
 end
-
-#
-# Custom Gemfile modifications
-#
-# To develop a gem locally and override its source to a checked out repo
-#   you can use this helper method in Gemfile.dev.rb e.g.
-#
-# override_gem 'manageiq-ui-classic', :path => "../manageiq-ui-classic"
-#
-def override_gem(name, *args)
-  if dependencies.any?
-    raise "Trying to override unknown gem #{name}" unless (dependency = dependencies.find { |d| d.name == name })
-
-    removed_dependency = dependencies.delete(dependency)
-    if removed_dependency.source.kind_of?(Bundler::Source::Git)
-      @sources.send(:source_list_for, removed_dependency.source).delete_if do |other_source|
-        removed_dependency.source == other_source
-      end
-    end
-
-    calling_file = caller_locations.detect { |loc| !loc.path.include?("lib/bundler") }.path
-    calling_dir  = File.dirname(calling_file)
-
-    args.last[:path] = File.expand_path(args.last[:path], calling_dir) if args.last.kind_of?(Hash) && args.last[:path]
-    gem(name, *args).tap do
-      warn "** override_gem: #{name}, #{args.inspect}, caller: #{calling_file}" unless ENV["RAILS_ENV"] == "production"
-    end
-  end
-end
-
-#HACKS UNTIL OTHER REPOS ARE UPDATED
-override_gem "activerecord-id_regions", :git => "https://github.com/jrafanie/activerecord-id_regions.git", :branch => "rails-5-1"
-override_gem "manageiq-schema",         :git => "https://github.com/jrafanie/manageiq-schema.git",         :branch => "rails-5-1"
-override_gem "inventory_refresh",       :git => "https://github.com/ManageIQ/inventory_refresh.git",       :branch => "master"
-
-# Load other additional Gemfiles
-#   Developers can create a file ending in .rb under bundler.d/ to specify additional development dependencies
-Dir.glob(File.join(__dir__, 'bundler.d/*.rb')).each { |f| eval_gemfile(File.expand_path(f, __dir__)) }

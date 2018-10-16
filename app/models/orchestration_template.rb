@@ -188,7 +188,7 @@ class OrchestrationTemplate < ApplicationRecord
   end
 
   def self.calc_md5(text)
-    Digest::MD5.hexdigest(text) if text
+    Digest::SHA256.hexdigest(text) if text
   end
 
   def calc_md5(text)

@@ -90,3 +90,7 @@ bundler.d/*
 # yardoc
 /doc/
 .yardoc
+bundle_vendor/
+cert.pem
+spec/lib/task_helpers/imports/data/custom_buttons/foo.yaml20190407-16457-1bs5cd9
+tags

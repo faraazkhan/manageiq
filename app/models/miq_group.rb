@@ -237,7 +237,7 @@ class MiqGroup < ApplicationRecord
 
     create_with(
       :description         => "Tenant #{tenant_full_name} access",
-      :default_tenant_role => MiqUserRole.default_tenant_role
+      # :default_tenant_role => MiqUserRole.default_tenant_role
     ).find_or_create_by!(
       :group_type => TENANT_GROUP,
       :tenant_id  => tenant.id,

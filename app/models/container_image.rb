@@ -7,7 +7,7 @@ class ContainerImage < ApplicationRecord
   include ArchivedMixin
   include NewWithTypeStiMixin
   include CustomActionsMixin
-  include_concern 'Purging'
+  # include_concern 'Purging' # TODO Fix The Purge
 
   DOCKER_IMAGE_PREFIX = "docker://"
   DOCKER_PULLABLE_PREFIX = "docker-pullable://".freeze

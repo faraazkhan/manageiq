@@ -11,7 +11,6 @@ class ConversionHost < ApplicationRecord
   has_many :active_tasks, -> { where(:state => ['active', 'migrate']) },
     :class_name => "ServiceTemplateTransformationPlanTask",
     :inverse_of => :conversion_host
-
   delegate :ext_management_system, :hostname, :ems_ref, :to => :resource, :allow_nil => true
 
   validates :name, :presence => true
